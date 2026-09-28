@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TripVault — Travel Dashboard</title>
+<style>
+:root{
+  --bg:#f4f6fa;--panel:#fff;--panel2:#f8f9fc;--text:#172033;--muted:#6b7280;
+  --border:#e7eaf0;--primary:#2563eb;--primary2:#4f46e5;--shadow:0 12px 35px rgba(20,30,55,.08)
+}
+body.dark{--bg:#090d16;--panel:#111827;--panel2:#0d1421;--text:#f7f9fc;--muted:#9aa5b5;--border:#243044;--shadow:0 15px 40px rgba(0,0,0,.28)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;transition:.25s}
+button,input,select{font:inherit}.layout{display:flex;min-height:100vh}.sidebar{width:275px;background:var(--panel);border-right:1px solid var(--border);padding:24px 18px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:850;margin:4px 8px 26px}.logoMark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#7c3aed);display:grid;place-items:center;color:#fff}
+.nav button,.filterHead{width:100%;border:0;background:transparent;color:var(--text);padding:12px 13px;border-radius:11px;text-align:left;cursor:pointer}.nav button:hover,.nav .active{background:rgba(37,99,235,.1);color:#2563eb}.filterTitle{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--muted);margin:25px 10px 8px}.filterBlock{margin-bottom:10px}.filterHead{display:flex;justify-content:space-between;font-weight:700}.filterBody{padding:6px 10px 4px}.check{display:flex;align-items:center;gap:9px;padding:7px 0;color:var(--muted);font-size:14px}.check input{accent-color:var(--primary)}
+.main{flex:1;min-width:0}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--border);background:var(--panel)}.search{width:min(460px,50vw);position:relative}.search input{width:100%;padding:12px 15px 12px 40px;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:12px;outline:none}.search span{position:absolute;left:14px;top:10px}.topActions{display:flex;align-items:center;gap:10px}.iconBtn{border:1px solid var(--border);background:var(--panel2);color:var(--text);width:42px;height:42px;border-radius:12px;cursor:pointer}.profile{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:800}
+.content{padding:28px;max-width:1500px;margin:auto}.hero{min-height:230px;border-radius:22px;padding:30px;display:flex;align-items:flex-end;background:linear-gradient(90deg,rgba(8,15,30,.9),rgba(8,15,30,.35)),url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=85') center/cover;box-shadow:var(--shadow);color:#fff}.hero h1{font-size:38px;margin:0 0 8px}.hero p{margin:0;color:#dbe4f4}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}.stat{background:var(--panel);border:1px solid var(--border);border-radius:17px;padding:18px;box-shadow:var(--shadow)}.statLabel{font-size:13px;color:var(--muted)}.statNum{font-size:28px;font-weight:850;margin-top:7px}.progress{height:7px;background:var(--border);border-radius:99px;margin-top:12px;overflow:hidden}.progress div{height:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);border-radius:99px}
+.sectionHead{display:flex;align-items:center;justify-content:space-between;margin:26px 0 14px}.sectionHead h2{margin:0;font-size:21px}.actions{display:flex;gap:8px}.btn{border:0;border-radius:11px;padding:11px 15px;cursor:pointer;font-weight:750}.primary{background:linear-gradient(135deg,#2563eb,#4f46e5);color:#fff}.secondary{background:var(--panel);border:1px solid var(--border);color:var(--text)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.card{background:var(--panel);border:1px solid var(--border);border-radius:17px;overflow:hidden;box-shadow:var(--shadow);min-width:0}.photo{height:155px;background-size:cover;background-position:center;position:relative}.badge{position:absolute;top:11px;left:11px;padding:6px 9px;border-radius:999px;color:#fff;font-size:12px;font-weight:800}.badge.v{background:#16a36b}.badge.p{background:#f59e0b}.heart{position:absolute;right:10px;top:10px;border:0;background:#0007;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer}.cardBody{padding:14px}.card h3{margin:0 0 5px;font-size:17px}.location{font-size:13px;color:var(--muted);margin-bottom:11px}.tags{display:flex;flex-wrap:wrap;gap:6px}.tag{font-size:11px;padding:5px 8px;border-radius:999px;background:rgba(37,99,235,.1);color:#4f75d9}.cardActions{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}.small{padding:7px 9px;font-size:12px}.empty{background:var(--panel);border:1px dashed var(--border);padding:50px;text-align:center;border-radius:16px;color:var(--muted)}
+dialog{border:0;border-radius:20px;padding:0;width:min(520px,calc(100% - 28px));background:var(--panel);color:var(--text);box-shadow:0 25px 90px #0006}dialog::backdrop{background:#02061799}.modal{padding:24px}.modal h2{margin:0 0 18px}.form{display:grid;gap:12px}.form input,.form select{padding:12px;border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.modalFoot{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:repeat(2,1fr)}}@media(max-width:820px){.sidebar{width:225px}.cards{grid-template-columns:repeat(2,1fr)}.topbar{padding:0 16px}.content{padding:16px}.search{width:45vw}}@media(max-width:620px){.sidebar{display:none}.cards{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.hero h1{font-size:28px}.row{grid-template-columns:1fr}.topbar{gap:8px}.search{width:100%}.profile{display:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+  <div class="logo"><div class="logoMark">⛰</div>TripVault</div>
+  <div class="nav">
+    <button class="active" onclick="goHome()">⌂ &nbsp; Home</button>
+    <button onclick="scrollToDest()">◫ &nbsp; All Destinations</button>
+    <button onclick="openModal()">＋ &nbsp; Add Destination</button>
+  </div>
+  <div class="filterTitle">FILTERS</div>
+  <div class="filterBlock">
+    <button class="filterHead" onclick="toggleFilter('locBody')">📍 Location <span>⌄</span></button>
+    <div class="filterBody" id="locBody"><select id="locationFilter" onchange="render()"></select></div>
+  </div>
+  <div class="filterBlock">
+    <button class="filterHead" onclick="toggleFilter('statusBody')">◷ Status <span>⌄</span></button>
+    <div class="filterBody" id="statusBody">
+      <label class="check"><input type="checkbox" value="Visited" onchange="render()"> Visited <span id="visitedSide" style="margin-left:auto"></span></label>
+      <label class="check"><input type="checkbox" value="Yet to Visit" onchange="render()"> Yet to Visit <span id="pendingSide" style="margin-left:auto"></span></label>
+    </div>
+  </div>
+  <div class="filterBlock">
+    <button class="filterHead" onclick="toggleFilter('tagBody')">🏷 Tags <span>⌄</span></button>
+    <div class="filterBody" id="tagBody"></div>
+  </div>
+  <button class="filterHead" onclick="resetFilters()" style="margin-top:10px;color:#2563eb">↻ Reset Filters</button>
+  <div style="margin-top:28px;border-top:1px solid var(--border);padding-top:16px">
+    <button class="filterHead" onclick="toggleTheme()">◐ Dark Mode <span id="themeIcon">○</span></button>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="search"><span>⌕</span><input id="search" placeholder="Search destinations..." oninput="render()"></div>
+  <div class="topActions"><button class="iconBtn" onclick="toggleTheme()" title="Toggle dark mode">☼</button><div class="profile">SS</div></div>
+</header>
+<div class="content">
+  <section class="hero"><div><h1>Hello, Traveller! 👋</h1><p>Keep track of the places you've visited and the ones still on your list.</p></div></section>
+  <section class="stats">
+    <div class="stat"><div class="statLabel">Total Destinations</div><div class="statNum" id="total">0</div></div>
+    <div class="stat"><div class="statLabel">Visited</div><div class="statNum" id="visited">0</div></div>
+    <div class="stat"><div class="statLabel">Yet to Visit</div><div class="statNum" id="pending">0</div></div>
+    <div class="stat"><div class="statLabel">Explored</div><div class="statNum" id="percent">0%</div><div class="progress"><div id="bar"></div></div></div>
+  </section>
+  <div class="sectionHead" id="destinations"><h2>Destinations</h2><div class="actions"><button class="btn secondary" onclick="resetFilters()">Clear Filters</button><button class="btn primary" onclick="openModal()">＋ Add Destination</button></div></div>
+  <div class="cards" id="cards"></div>
+  <div class="empty" id="empty" style="display:none">No destinations match your filters.</div>
+</div>
+</main>
+</div>
+
+<dialog id="modal">
+<form class="modal" onsubmit="saveDestination(event)">
+<h2 id="modalTitle">Add Destination</h2><input type="hidden" id="editId">
+<div class="form">
+<input id="name" required placeholder="Destination name">
+<div class="row"><select id="location" required></select><select id="status"><option>Yet to Visit</option><option>Visited</option></select></div>
+<input id="tags" placeholder="Tags, separated by commas">
+</div>
+<div class="modalFoot"><button type="button" class="btn secondary" onclick="modal.close()">Cancel</button><button class="btn primary">Save Destination</button></div>
+</form>
+</dialog>
+
+<script>
+const locations=["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Delhi"];
+const images={
+"Spiti Valley":"https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80",
+"Valley of Flowers":"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80",
+"Goa":"https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80",
+"Kedarnath":"https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=900&q=80",
+"Leh Ladakh":"https://images.unsplash.com/photo-1533130061792-64b345e4a833?auto=format&fit=crop&w=900&q=80",
+"Jaipur":"https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=900&q=80",
+"Coorg":"https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=900&q=80",
+"Alleppey":"https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=900&q=80"
+};
+const key="tripvault_premium_v1";
+let data=JSON.parse(localStorage.getItem(key)||"[]");
+if(!data.length)data=[
+{id:"1",name:"Spiti Valley",location:"Himachal Pradesh",status:"Yet to Visit",tags:["Adventure","Trek","Scenic"]},
+{id:"2",name:"Valley of Flowers",location:"Uttarakhand",status:"Yet to Visit",tags:["Trek","Nature","Photography"]},
+{id:"3",name:"Goa",location:"Goa",status:"Visited",tags:["Beach","Relaxing","Friends Trip"]},
+{id:"4",name:"Kedarnath",location:"Uttarakhand",status:"Yet to Visit",tags:["Spiritual","Trek","Mountain"]},
+{id:"5",name:"Leh Ladakh",location:"Ladakh",status:"Visited",tags:["Adventure","Road Trip","Scenic"]},
+{id:"6",name:"Jaipur",location:"Rajasthan",status:"Yet to Visit",tags:["History","Culture","Architecture"]},
+{id:"7",name:"Coorg",location:"Karnataka",status:"Yet to Visit",tags:["Nature","Coffee","Scenic"]},
+{id:"8",name:"Alleppey",location:"Kerala",status:"Visited",tags:["Backwaters","Relaxing","Nature"]}
+];
+const modal=document.getElementById("modal");
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function save(){localStorage.setItem(key,JSON.stringify(data))}
+function populate(){
+ document.getElementById("location").innerHTML='<option value="">Select location</option>'+locations.map(x=>`<option>${esc(x)}</option>`).join("");
+ document.getElementById("locationFilter").innerHTML='<option value="">All States (29)</option>'+locations.map(x=>`<option>${esc(x)}</option>`).join("");
+ const tags=[...new Set(data.flatMap(x=>x.tags||[]))].sort();
+ document.getElementById("tagBody").innerHTML=tags.map(t=>`<label class="check"><input type="checkbox" value="${esc(t)}" onchange="render()"> ${esc(t)}</label>`).join("");
+}
+function render(){
+ const q=document.getElementById("search").value.toLowerCase(),loc=document.getElementById("locationFilter").value;
+ const statuses=[...document.querySelectorAll('#statusBody input:checked')].map(x=>x.value);
+ const tags=[...document.querySelectorAll('#tagBody input:checked')].map(x=>x.value);
+ const rows=data.filter(d=>(!q||d.name.toLowerCase().includes(q))&&(!loc||d.location===loc)&&(!statuses.length||statuses.includes(d.status))&&(!tags.length||tags.some(t=>(d.tags||[]).includes(t))));
+ document.getElementById("cards").innerHTML=rows.map(d=>`
+ <article class="card"><div class="photo" style="background-image:url('${images[d.name]||"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"}')">
+ <span class="badge ${d.status==="Visited"?"v":"p"}">${d.status==="Visited"?"✓ Visited":"◷ Yet to Visit"}</span><button class="heart">♡</button></div>
+ <div class="cardBody"><h3>${esc(d.name)}</h3><div class="location">⌖ ${esc(d.location)}</div><div class="tags">${(d.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>
+ <div class="cardActions"><button class="btn secondary small" onclick="openModal('${d.id}')">Edit</button><button class="btn secondary small" onclick="removeItem('${d.id}')">Delete</button></div></div></article>`).join("");
+ document.getElementById("empty").style.display=rows.length?"none":"block";
+ const total=data.length,vis=data.filter(d=>d.status==="Visited").length,pending=total-vis,pct=total?Math.round(vis/total*100):0;
+ totalEl.textContent=total;visitedEl.textContent=vis;pendingEl.textContent=pending;percent.textContent=pct+"%";bar.style.width=pct+"%";
+ visitedSide.textContent=vis;pendingSide.textContent=pending;
+}
+const totalEl=document.getElementById("total"),visitedEl=document.getElementById("visited"),pendingEl=document.getElementById("pending"),percent=document.getElementById("percent"),bar=document.getElementById("bar"),visitedSide=document.getElementById("visitedSide"),pendingSide=document.getElementById("pendingSide");
+function openModal(id=null){document.getElementById("modalTitle").textContent=id?"Edit Destination":"Add Destination";document.getElementById("editId").value=id||"";let d=data.find(x=>x.id===id);document.getElementById("name").value=d?.name||"";document.getElementById("location").value=d?.location||"";document.getElementById("status").value=d?.status||"Yet to Visit";document.getElementById("tags").value=(d?.tags||[]).join(", ");modal.showModal()}
+function saveDestination(e){e.preventDefault();let id=document.getElementById("editId").value;let item={id:id||crypto.randomUUID(),name:name.value.trim(),location:location.value,status:status.value,tags:tags.value.split(",").map(x=>x.trim()).filter(Boolean)};data=id?data.map(x=>x.id===id?item:x):[...data,item];save();modal.close();populate();render()}
+function removeItem(id){if(confirm("Delete this destination?")){data=data.filter(x=>x.id!==id);save();populate();render()}}
+function resetFilters(){search.value="";locationFilter.value="";document.querySelectorAll(".filterBody input").forEach(x=>x.checked=false);render()}
+function toggleFilter(id){let e=document.getElementById(id);e.style.display=e.style.display==="none"?"block":"none"}
+function toggleTheme(){document.body.classList.toggle("dark");localStorage.setItem("tripvault_theme",document.body.classList.contains("dark")?"dark":"light")}
+function goHome(){window.scrollTo({top:0,behavior:"smooth"})}
+function scrollToDest(){document.getElementById("destinations").scrollIntoView({behavior:"smooth"})}
+if(localStorage.getItem("tripvault_theme")==="dark")document.body.classList.add("dark");
+populate();render();
+</script>
+</body>
+</html>
